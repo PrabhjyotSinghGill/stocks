@@ -10,10 +10,4 @@
     padding-top:5vh;
     padding-bottom:5vh;
 }
-.header{
-    display: flex;
-    max-height:65px;
-    margin:6px 0 4px;
-    align-items: center;
-    justify-content: center;
-}
+

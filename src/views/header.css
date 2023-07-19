@@ -1,0 +1,9 @@
+.header{
+    display: flex;
+    max-height:65px;
+    padding-bottom: 15px;
+    margin:6px 0 4px;
+    align-items: center;
+    justify-content: center;
+    color: var(--grey);
+}

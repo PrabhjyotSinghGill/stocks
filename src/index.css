@@ -1,4 +1,7 @@
 *{
   margin:0;
   padding:0;
+  --grey:#3c4043;
+  color:var(--grey);
+    font-family: Google Sans,arial,sans-serif-medium,sans-serif;
 }
