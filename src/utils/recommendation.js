@@ -1,4 +1,7 @@
-import { getStockPricesForLast10Days } from '../data/api'
+import {
+    getStockPricesForLast10Days,
+    getStockSocialMediaCountForLast10Days,
+} from '../data/api'
 
 export const RECOMMENDATION = {
     BUY: 'BUY',
@@ -6,7 +9,7 @@ export const RECOMMENDATION = {
     HOLD: 'HOLD',
 }
 
-export async function getRecommendation(stockSymbol) {
+export async function getStockRecommendation(stockSymbol) {
     let stockPriceList = await getStockPricesForLast10Days(stockSymbol)
     let stockSocialMediaCountList = await getStockSocialMediaCountForLast10Days(
         stockSymbol
