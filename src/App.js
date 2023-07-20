@@ -3,8 +3,8 @@ import { useState } from 'react'
 import './App.css'
 import Header from './components/header'
 import Information from './components/information'
-import Graph from './components/graph'
 import { AppContext } from './context/app-context'
+import InfoTable from './components/infoTable'
 
 function App() {
     const [selectedStockSymbol, setSelectedStockSymbol] = useState()
@@ -21,7 +21,7 @@ function App() {
                 <Divider></Divider>
                 <Information></Information>
                 <Divider></Divider>
-                <Graph></Graph>
+                <InfoTable></InfoTable>
             </div>
         </AppContext.Provider>
     )
