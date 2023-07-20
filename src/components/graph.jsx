@@ -1,10 +1,12 @@
-import React from 'react';
-import "../views/graph.css"
+import React from 'react'
+import '../views/graph.css'
 
 function Graph() {
-    return <div className='graph'>
-        Market Summary &gt; iShares NASDAQ 100 Index ETF (CAD-Hedged)
-    </div>
+    return (
+        <div className="graph">
+            Market Summary &gt; iShares NASDAQ 100 Index ETF (CAD-Hedged)
+        </div>
+    )
 }
 
-export default Graph;
+export default Graph

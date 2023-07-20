@@ -6,23 +6,23 @@
  * to how a real API would return.
  */
 
-import { stockPrices } from "./stock-price";
-import { stockSocialMediaCount } from "./stock-social-media-count";
+import { stockPrices } from './stock-price'
+import { stockSocialMediaCount } from './stock-social-media-count'
 
 export const getStockPricesForLast10Days = (stockSymbol) => {
-  // Returns a promise which immediately resolves to the dummy data.
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(stockPrices[stockSymbol]);
-    });
-  });
-};
+    // Returns a promise which immediately resolves to the dummy data.
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(stockPrices[stockSymbol])
+        })
+    })
+}
 
 export const getStockSocialMediaCountForLast10Days = (stockSymbol) => {
-  // Returns a promise which immediately resolves to the dummy data.
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(stockSocialMediaCount[stockSymbol]);
-    });
-  });
-};
+    // Returns a promise which immediately resolves to the dummy data.
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(stockSocialMediaCount[stockSymbol])
+        })
+    })
+}
