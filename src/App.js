@@ -11,7 +11,10 @@ function App() {
 
     return (
         <AppContext.Provider
-            value={{ selectedStockSymbol, setSelectedStockSymbol }}
+            value={{
+                selectedStockSymbol,
+                setSelectedStockSymbol,
+            }}
         >
             <div className="app">
                 <Header></Header>

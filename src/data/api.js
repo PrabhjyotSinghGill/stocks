@@ -8,6 +8,7 @@
 
 import { stockPrices } from './stock-price'
 import { stockSocialMediaCount } from './stock-social-media-count'
+import { stockSymbolName } from './stock-symbol-name'
 
 export const getStockPricesForLast10Days = (stockSymbol) => {
     // Returns a promise which immediately resolves to the dummy data.
@@ -23,6 +24,19 @@ export const getStockSocialMediaCountForLast10Days = (stockSymbol) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(stockSocialMediaCount[stockSymbol])
+        })
+    })
+}
+
+export const getNameFromSymbol = (stockSymbol) => {
+    // Returns a promise which immediately resolves to the dummy data.
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (stockSymbolName[stockSymbol]) {
+                resolve(stockSymbolName[stockSymbol])
+            } else {
+                reject(`${stockSymbol} is not listed in Toronto Stock Exchange`)
+            }
         })
     })
 }
