@@ -48,8 +48,9 @@ export default function InfoTable() {
                         Math.min(stockSocialMediaCountList.length - 2 - i, 0)
                     ]
                 const recommendation = getStockRecommendation(
-                    price - priceDayBefore,
-                    socialMediaCount - socialMediaCountDayBefore
+                    ((price - priceDayBefore) * 100) / priceDayBefore,
+                    ((socialMediaCount - socialMediaCountDayBefore) * 100) /
+                        socialMediaCountDayBefore
                 )
                 rows.push({
                     date: getDateBefore(i),
@@ -68,7 +69,7 @@ export default function InfoTable() {
         <>
             {tableData.length > 0 && (
                 <div className="container">
-                    <div>Market Summary &gt; Toronto Stock Exchange [TSX]</div>(
+                    <div>Market Summary &gt; Toronto Stock Exchange [TSX]</div>
                     <TableContainer component={Paper} className="infoTable">
                         <Table aria-label="simple table">
                             <TableHead>
@@ -113,7 +114,6 @@ export default function InfoTable() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    )
                 </div>
             )}
         </>

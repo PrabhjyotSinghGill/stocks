@@ -4,10 +4,33 @@ export const RECOMMENDATION = {
     HOLD: 'HOLD',
 }
 
-export const getStockRecommendation = (priceChange, socialMediaCountChange) => {
-    if (priceChange > 0 && socialMediaCountChange > 0) {
+export const getStockRecommendation = (
+    priceChangePercentage,
+    socialMediaCountChangePercentage
+) => {
+    const percentagePriceChangeThreshold = 5
+    const percentageSocialMediaCountChangeThreshold = 10
+
+    if (
+        Math.abs(priceChangePercentage) < percentagePriceChangeThreshold ||
+        Math.abs(socialMediaCountChangePercentage) <
+            percentageSocialMediaCountChangeThreshold
+    ) {
+        return RECOMMENDATION.HOLD
+    } else if (
+        priceChangePercentage > 0 &&
+        socialMediaCountChangePercentage > 0
+    ) {
         return RECOMMENDATION.BUY
-    } else if (priceChange < 0 && socialMediaCountChange < 0) {
+    } else if (
+        priceChangePercentage < 0 &&
+        socialMediaCountChangePercentage < 0
+    ) {
+        return RECOMMENDATION.SELL
+    } else if (
+        priceChangePercentage < 0 &&
+        socialMediaCountChangePercentage > 0
+    ) {
         return RECOMMENDATION.SELL
     } else {
         return RECOMMENDATION.HOLD
