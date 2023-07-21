@@ -20,8 +20,12 @@ function App() {
                 <Header></Header>
                 <Divider></Divider>
                 <Information></Information>
-                <Divider></Divider>
-                <InfoTable></InfoTable>
+                {selectedStockSymbol && (
+                    <>
+                        <Divider></Divider>
+                        <InfoTable></InfoTable>
+                    </>
+                )}
             </div>
         </AppContext.Provider>
     )

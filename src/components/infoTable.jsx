@@ -7,33 +7,55 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-
-function createData(
-    date,
-    openPrice,
-    high,
-    low,
-    closePrice,
-    volume,
-    socialMediaCount
-) {
-    return { date, openPrice, high, low, closePrice, volume, socialMediaCount }
-}
-
-const rows = [
-    createData('2023-07-11', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-12', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-13', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-13', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-13', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-13', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-13', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-13', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-13', 100, 105, 95, 103, 5000, 0),
-    createData('2023-07-13', 100, 105, 95, 103, 5000, 0),
-]
+import { AppContext } from '../context/app-context'
+import { getDateBefore } from '../utils/date-util'
+import {
+    getStockPricesForLast10Days,
+    getStockSocialMediaCountForLast10Days,
+} from '../data/api'
+import { getStockRecommendation } from '../utils/recommendation'
 
 export default function InfoTable() {
+    const { selectedStockSymbol } = React.useContext(AppContext)
+    const [tableData, setTableData] = React.useState([])
+
+    React.useEffect(() => {
+        const updateTableData = async () => {
+            let stockPriceList = await getStockPricesForLast10Days(
+                selectedStockSymbol
+            )
+            let stockSocialMediaCountList =
+                await getStockSocialMediaCountForLast10Days(selectedStockSymbol)
+            const rows = []
+            for (let i = 0; i < 10; i++) {
+                const price = stockPriceList[stockPriceList.length - 1 - i]
+                const socialMediaCount =
+                    stockSocialMediaCountList[
+                        stockSocialMediaCountList.length - 1 - i
+                    ]
+                const priceDayBefore =
+                    stockPriceList[Math.min(stockPriceList.length - 2 - i, 0)]
+                const socialMediaCountDayBefore =
+                    stockSocialMediaCountList[
+                        Math.min(stockSocialMediaCountList.length - 2 - i, 0)
+                    ]
+                const recommendation = getStockRecommendation(
+                    price - priceDayBefore,
+                    socialMediaCount - socialMediaCountDayBefore
+                )
+                rows.push({
+                    date: getDateBefore(i),
+                    price,
+                    socialMediaCount,
+                    recommendation,
+                })
+            }
+
+            setTableData(rows)
+        }
+        updateTableData()
+    }, [selectedStockSymbol])
+
     return (
         <div className="container">
             <div>Market Summary &gt; Toronto Stock Exchange [TSX]</div>
@@ -42,24 +64,17 @@ export default function InfoTable() {
                     <TableHead>
                         <TableRow>
                             <TableCell>Date</TableCell>
-                            <TableCell align="right">
-                                Open Price&nbsp;($)
-                            </TableCell>
-                            <TableCell align="right">High&nbsp;($)</TableCell>
-                            <TableCell align="right">Low&nbsp;($)</TableCell>
-                            <TableCell align="right">
-                                Close Price&nbsp;($)
-                            </TableCell>
-                            <TableCell align="right">Volume</TableCell>
+                            <TableCell align="right">Price&nbsp;($)</TableCell>
                             <TableCell align="right">
                                 Social Media Count
                             </TableCell>
+                            <TableCell align="right">Recommendation</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {tableData.map((row) => (
                             <TableRow
-                                key={row.name}
+                                key={row.date}
                                 sx={{
                                     '&:last-child td, &:last-child th': {
                                         border: 0,
@@ -69,19 +84,12 @@ export default function InfoTable() {
                                 <TableCell component="th" scope="row">
                                     {row.date}
                                 </TableCell>
-                                <TableCell align="right">
-                                    {row.openPrice}
-                                </TableCell>
-                                <TableCell align="right">{row.high}</TableCell>
-                                <TableCell align="right">{row.low}</TableCell>
-                                <TableCell align="right">
-                                    {row.closePrice}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {row.volume}
-                                </TableCell>
+                                <TableCell align="right">{row.price}</TableCell>
                                 <TableCell align="right">
                                     {row.socialMediaCount}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {row.recommendation}
                                 </TableCell>
                             </TableRow>
                         ))}
