@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper'
 import { AppContext } from '../context/app-context'
 import { getDateBefore } from '../utils/date-util'
 import {
+    getNameFromSymbol,
     getStockPricesForLast10Days,
     getStockSocialMediaCountForLast10Days,
 } from '../data/api'
@@ -21,6 +22,13 @@ export default function InfoTable() {
 
     React.useEffect(() => {
         const updateTableData = async () => {
+            try {
+                const stockName = await getNameFromSymbol(selectedStockSymbol)
+            } catch (e) {
+                setTableData([])
+                return
+            }
+
             let stockPriceList = await getStockPricesForLast10Days(
                 selectedStockSymbol
             )
@@ -57,45 +65,57 @@ export default function InfoTable() {
     }, [selectedStockSymbol])
 
     return (
-        <div className="container">
-            <div>Market Summary &gt; Toronto Stock Exchange [TSX]</div>
-            <TableContainer component={Paper} className="infoTable">
-                <Table aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Date</TableCell>
-                            <TableCell align="right">Price&nbsp;($)</TableCell>
-                            <TableCell align="right">
-                                Social Media Count
-                            </TableCell>
-                            <TableCell align="right">Recommendation</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {tableData.map((row) => (
-                            <TableRow
-                                key={row.date}
-                                sx={{
-                                    '&:last-child td, &:last-child th': {
-                                        border: 0,
-                                    },
-                                }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.date}
-                                </TableCell>
-                                <TableCell align="right">{row.price}</TableCell>
-                                <TableCell align="right">
-                                    {row.socialMediaCount}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {row.recommendation}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
+        <>
+            {tableData.length > 0 && (
+                <div className="container">
+                    <div>Market Summary &gt; Toronto Stock Exchange [TSX]</div>(
+                    <TableContainer component={Paper} className="infoTable">
+                        <Table aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Date</TableCell>
+                                    <TableCell align="right">
+                                        Price&nbsp;($)
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        Social Media Count
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        Recommendation
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {tableData.map((row) => (
+                                    <TableRow
+                                        key={row.date}
+                                        sx={{
+                                            '&:last-child td, &:last-child th':
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {row.date}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {row.price}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {row.socialMediaCount}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {row.recommendation}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    )
+                </div>
+            )}
+        </>
     )
 }
